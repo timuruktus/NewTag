@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "900181397596",
+    "firebase_url": "https://newtag-5c9a6.firebaseio.com",
+    "project_id": "newtag-5c9a6",
+    "storage_bucket": "newtag-5c9a6.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:900181397596:android:54ea98c28ab7460a",
+        "android_client_info": {
+          "package_name": "ru.timuruktus.newsletters"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "900181397596-tp2b9b3023c7pdfaeftjbq32tqcovbci.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "ru.timuruktus.newsletters",
+            "certificate_hash": "E1539C1A40259EEFB5828281D7AD44308F1C073F"
+          }
+        },
+        {
+          "client_id": "900181397596-mia81ifa4o8h75k3ki17oq2psifrufaa.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBB7y6LDenV7dFVwXK1mikVTDq9gVP1jaI"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "900181397596-mia81ifa4o8h75k3ki17oq2psifrufaa.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
