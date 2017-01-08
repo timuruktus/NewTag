@@ -11,7 +11,7 @@
         android:layout_height="match_parent"
         android:id="@+id/fragmentContainer"
         tools:layout="@layout/welcome_fragment"
-        android:name="ru.timuruktus.newsletters.Activities.EmptyFragment" />
+        android:name="ru.timuruktus.newsletters.View.Fragments.EmptyFragment" />
 
     <include
         android:layout_width="fill_parent"

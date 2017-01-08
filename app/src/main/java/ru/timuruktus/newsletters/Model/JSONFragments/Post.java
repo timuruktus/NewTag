@@ -1,4 +1,4 @@
-package ru.timuruktus.newsletters.Fragments;
+package ru.timuruktus.newsletters.Model.JSONFragments;
 
 
 public class Post {

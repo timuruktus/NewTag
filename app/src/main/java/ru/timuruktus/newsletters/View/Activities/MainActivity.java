@@ -1,15 +1,8 @@
-package ru.timuruktus.newsletters.Activities;
+package ru.timuruktus.newsletters.View.Activities;
 
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
-import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -19,14 +12,16 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Toast;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 
+import org.greenrobot.eventbus.EventBus;
+
+import ru.timuruktus.newsletters.Presenter.Events.MenuButClickEvent;
+import ru.timuruktus.newsletters.Presenter.MainActivityPresenter;
 import ru.timuruktus.newsletters.R;
+import ru.timuruktus.newsletters.View.Fragments.AuthFragment;
+import ru.timuruktus.newsletters.View.Fragments.WelcomeFragment;
 
 
 /**
@@ -46,6 +41,7 @@ public class MainActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        MainActivityPresenter map = new MainActivityPresenter();
 
         // TOOLBAR AND ETC.
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -99,22 +95,15 @@ public class MainActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
         FragmentManager fragmentManager = getFragmentManager();
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.addToBackStack(null);
         if (id == R.id.news_menu) {
-            // RECENT ACTIVITY. NOTHING HAPPENS
-            WelcomeFragment welcomeFragment = new WelcomeFragment();
-            fragmentTransaction.replace(R.id.fragmentContainer, welcomeFragment);
+            EventBus.getDefault().post(new MenuButClickEvent(id,fragmentManager,drawer));
         } else if (id == R.id.tag_menu) {
 
         } else if (id == R.id.settings_menu) {
 
         } else if (id == R.id.registration_menu){
-            AuthFragment authFragment = new AuthFragment();
-            fragmentTransaction.replace(R.id.fragmentContainer, authFragment);
+            EventBus.getDefault().post(new MenuButClickEvent(id,fragmentManager,drawer));
         }
-        fragmentTransaction.commit();
-        drawer.closeDrawer(GravityCompat.START);
         return true;
     }
 
