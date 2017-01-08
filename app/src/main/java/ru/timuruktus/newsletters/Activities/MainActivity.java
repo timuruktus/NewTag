@@ -1,5 +1,7 @@
 package ru.timuruktus.newsletters.Activities;
 
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -36,7 +38,7 @@ public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener {
 
     public final static String TAG = "logs";
-    DrawerLayout drawer;
+    private DrawerLayout drawer;
     private FirebaseAuth mAuth;
 
 
@@ -45,16 +47,9 @@ public class MainActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-
         // TOOLBAR AND ETC.
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-            }
-        });
 
         drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -103,17 +98,22 @@ public class MainActivity extends AppCompatActivity
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
-
+        FragmentManager fragmentManager = getFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.addToBackStack(null);
         if (id == R.id.news_menu) {
-            // Handle the camera action
+            // RECENT ACTIVITY. NOTHING HAPPENS
+            WelcomeFragment welcomeFragment = new WelcomeFragment();
+            fragmentTransaction.replace(R.id.fragmentContainer, welcomeFragment);
         } else if (id == R.id.tag_menu) {
 
         } else if (id == R.id.settings_menu) {
 
         } else if (id == R.id.registration_menu){
-
+            AuthFragment authFragment = new AuthFragment();
+            fragmentTransaction.replace(R.id.fragmentContainer, authFragment);
         }
-
+        fragmentTransaction.commit();
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
