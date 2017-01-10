@@ -1,21 +1,34 @@
 <resources>
-    <string name="app_name">NewTag</string>
-    <string name="title_activity_main">NewTag</string>
-    <string name="title_activity_auth">Регистрация</string>
+    // [APP NAME] : IF CHANGE, CHANGE BOTH
+    <string name="app_name">Tagger</string>
+    <string name="title_activity_main">Tagger</string>
 
+    // [ACTIONS FOR TOOLBAR] : DON'T CHANGE!
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
+    // [TOP MENU ITEMS]
     <string name="action_settings">Настройки</string>
 
+
+    // [LEFT MENU ITEMS]
     <string name="news">Новости</string>
     <string name="tags">Теги</string>
+    <string name="title_activity_auth">Регистрация</string>
+
+    // [HINTS FOR EDIT TEXT]
+    <string name="hint_pass">Пароль</string>
+    <string name="hint_email">Почта</string>
+
+    // [BUTTON TEXT]
     <string name="registration">Зарегистрироваться</string>
+    <string name="login">Войти</string>
 
+
+    // [TOAST TEXT]
     <string name="auth_failed">Неверная почта, или пароль</string>
+    <string name="auth_success_login">Вы успешно вошли!</string>
+    <string name="auth_success_singin">Вы успешно зарегистрировались! Пожалуйста, подтвердите ваш аккаунт на почте!</string>
 
-    <string name="font_roboto_medium">fonts/Roboto-Medium.ttf</string>
-    <string name="font_roboto_regular">fonts/Roboto-Regular.ttf</string>
-    <string name="font_roboto_italic">fonts/Roboto-Italic.ttf</string>
-    <string name="font_roboto_light">fonts/Roboto-Light.ttf</string>
+
 </resources>

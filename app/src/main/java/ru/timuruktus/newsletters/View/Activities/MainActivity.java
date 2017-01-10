@@ -2,7 +2,9 @@ package ru.timuruktus.newsletters.View.Activities;
 
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -14,10 +16,10 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 import org.greenrobot.eventbus.EventBus;
 
-import ru.timuruktus.newsletters.Presenter.Events.MenuButClickEvent;
 import ru.timuruktus.newsletters.Presenter.MainActivityPresenter;
 import ru.timuruktus.newsletters.R;
 import ru.timuruktus.newsletters.View.Fragments.AuthFragment;
@@ -30,9 +32,9 @@ import ru.timuruktus.newsletters.View.Fragments.WelcomeFragment;
  * BY KHASANOV TIMUR (16)
  */
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener {
+        implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener, IMainActivity {
 
-    public final static String TAG = "logs";
+    public final static String TAG = "tag";
     private DrawerLayout drawer;
     private FirebaseAuth mAuth;
 
@@ -41,7 +43,15 @@ public class MainActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         MainActivityPresenter map = new MainActivityPresenter();
+
+        FragmentManager fragmentManager = getFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        WelcomeFragment welcomeFragment = new WelcomeFragment();
+        fragmentTransaction.replace(R.id.fragmentContainer, welcomeFragment);
+        fragmentTransaction.commit();
 
         // TOOLBAR AND ETC.
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -55,7 +65,6 @@ public class MainActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
-
     }
 
     @Override
@@ -92,18 +101,25 @@ public class MainActivity extends AppCompatActivity
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
-        // Handle navigation view item clicks here.
-        int id = item.getItemId();
         FragmentManager fragmentManager = getFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        int id = item.getItemId();
         if (id == R.id.news_menu) {
-            EventBus.getDefault().post(new MenuButClickEvent(id,fragmentManager,drawer));
+            // RECENT ACTIVITY. NOTHING HAPPENS
+            WelcomeFragment welcomeFragment = new WelcomeFragment();
+            fragmentTransaction.replace(R.id.fragmentContainer, welcomeFragment);
         } else if (id == R.id.tag_menu) {
-
+            // DELETE THIS LATER!!!!!!!!!!!!!!!!!
+            FirebaseAuth.getInstance().signOut();
+            Log.d(TAG, "LOGOUT FROM MENU");
         } else if (id == R.id.settings_menu) {
 
         } else if (id == R.id.registration_menu){
-            EventBus.getDefault().post(new MenuButClickEvent(id,fragmentManager,drawer));
+            AuthFragment authFragment = new AuthFragment();
+            fragmentTransaction.replace(R.id.fragmentContainer, authFragment);
         }
+        fragmentTransaction.commit();
+        drawer.closeDrawer(GravityCompat.START);
         return true;
     }
 

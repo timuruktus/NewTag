@@ -11,8 +11,9 @@ public class WelcomePresenter {
 
     public WelcomePresenter(IWelcomeFragment iWelcomeFragment){
         this.iWelcomeFragment = iWelcomeFragment;
-        EventBus.getDefault().register(this);
     }
+
+
 
 
 }
