@@ -18,10 +18,9 @@ public class AuthPresenter  {
     public AuthPresenter(IAuthFragmentCallBack iAuthFragmentCallBack){
         this.iAuthFragmentCallBack = iAuthFragmentCallBack;
 
-
     }
 
-    // !!!!!!UNDER THIS STATEMENT- CALLBACKS FROM VIEW!!!!!!
+    // !!!!!!UNDER THIS STATEMENT- SIGNALS FROM VIEW!!!!!!
     /**
      * Called when registration button
      * was clicked

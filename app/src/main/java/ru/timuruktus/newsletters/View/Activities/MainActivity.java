@@ -1,10 +1,12 @@
 package ru.timuruktus.newsletters.View.Activities;
 
+import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.ContextMenu;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -32,11 +34,15 @@ import ru.timuruktus.newsletters.View.Fragments.WelcomeFragment;
  * BY KHASANOV TIMUR (16)
  */
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener, IMainActivity {
+        implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener, IMainActivity,
+        DrawerLayout.DrawerListener{
 
     public final static String TAG = "tag";
     private DrawerLayout drawer;
     private FirebaseAuth mAuth;
+    private MainActivityPresenter mainActivityPresenter;
+    public NavigationView navigationView;
+    private ContextMenu menu;
 
 
     @Override
@@ -45,7 +51,7 @@ public class MainActivity extends AppCompatActivity
         setContentView(R.layout.activity_main);
 
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-        MainActivityPresenter map = new MainActivityPresenter();
+        mainActivityPresenter = new MainActivityPresenter(this);
 
         FragmentManager fragmentManager = getFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
@@ -57,14 +63,19 @@ public class MainActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.addDrawerListener(toggle);
-        toggle.syncState();
-
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        drawer.addDrawerListener(new ActionBarDrawerToggle(
+                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close){
+            @Override
+            public void onDrawerOpened(View drawerView) {
+                mainActivityPresenter.loadMenuItems(MainActivity.this.navigationView.getMenu());
+            }
+        });
+
+
     }
 
     @Override
@@ -102,24 +113,8 @@ public class MainActivity extends AppCompatActivity
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         FragmentManager fragmentManager = getFragmentManager();
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        int id = item.getItemId();
-        if (id == R.id.news_menu) {
-            // RECENT ACTIVITY. NOTHING HAPPENS
-            WelcomeFragment welcomeFragment = new WelcomeFragment();
-            fragmentTransaction.replace(R.id.fragmentContainer, welcomeFragment);
-        } else if (id == R.id.tag_menu) {
-            // DELETE THIS LATER!!!!!!!!!!!!!!!!!
-            FirebaseAuth.getInstance().signOut();
-            Log.d(TAG, "LOGOUT FROM MENU");
-        } else if (id == R.id.settings_menu) {
+        mainActivityPresenter.onLeftMenuButClick(item, fragmentManager, drawer);
 
-        } else if (id == R.id.registration_menu){
-            AuthFragment authFragment = new AuthFragment();
-            fragmentTransaction.replace(R.id.fragmentContainer, authFragment);
-        }
-        fragmentTransaction.commit();
-        drawer.closeDrawer(GravityCompat.START);
         return true;
     }
 
@@ -127,4 +122,31 @@ public class MainActivity extends AppCompatActivity
     public void onClick(View v) {
 
     }
+
+    @Override
+    public void onDrawerSlide(View drawerView, float slideOffset) {
+
+    }
+
+    @Override
+    public void onDrawerOpened(View drawerView) {
+
+    }
+
+    @Override
+    public void onDrawerClosed(View drawerView) {
+
+    }
+
+    @Override
+    public void onDrawerStateChanged(int newState) {
+
+    }
+
+    @Override
+    public Fragment getCurrentFragment() {
+        Fragment frag = getFragmentManager().findFragmentById(R.id.fragmentContainer);
+        return frag;
+    }
+
 }

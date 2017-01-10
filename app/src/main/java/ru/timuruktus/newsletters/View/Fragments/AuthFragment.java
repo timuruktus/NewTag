@@ -74,13 +74,15 @@ public class AuthFragment extends Fragment implements IAuthFragmentCallBack,
         passInput = (TextInputLayout) rootView.findViewById(R.id.passInput);
         emailInput.setTypeface(CF);
         passInput.setTypeface(CF);
+
         editTextEmail = (TextView) rootView.findViewById(R.id.edit_text_email);
         editTextPass = (TextView) rootView.findViewById(R.id.edit_text_pass);
         editTextEmail.setTypeface(CF);
         editTextPass.setTypeface(CF);
-        sliderShow = (SliderLayout) rootView.findViewById(R.id.slider);
 
+        sliderShow = (SliderLayout) rootView.findViewById(R.id.slider);
         configureSliderImages();
+
 
         authPresenter = new AuthPresenter(this);
         return rootView;
