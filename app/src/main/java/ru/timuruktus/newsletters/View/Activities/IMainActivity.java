@@ -6,6 +6,7 @@ import android.app.Fragment;
 public interface IMainActivity {
 
     Fragment getCurrentFragment();
+    void changeToolbarTitle(int resId);
 
 
 }

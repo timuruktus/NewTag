@@ -43,6 +43,7 @@ public class MainActivity extends AppCompatActivity
     private MainActivityPresenter mainActivityPresenter;
     public static NavigationView navigationView;
     private ContextMenu menu;
+    private Toolbar toolbar;
 
 
     @Override
@@ -60,15 +61,19 @@ public class MainActivity extends AppCompatActivity
         fragmentTransaction.commit();
 
         // TOOLBAR AND ETC.
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
 
         navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
         drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        drawer.addDrawerListener(new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close));
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer,
+                toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        drawer.addDrawerListener(toggle);
+        toggle.syncState();
+
 
         mainActivityPresenter = new MainActivityPresenter(this);
 
@@ -143,6 +148,11 @@ public class MainActivity extends AppCompatActivity
     public Fragment getCurrentFragment() {
         Fragment frag = getFragmentManager().findFragmentById(R.id.fragmentContainer);
         return frag;
+    }
+
+    @Override
+    public void changeToolbarTitle(int resId) {
+        toolbar.setTitle(resId);
     }
 
 }

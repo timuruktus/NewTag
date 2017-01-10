@@ -53,6 +53,7 @@ public class MainActivityPresenter {
             if (id == R.id.news_menu) {
                 WelcomeFragment welcomeFragment = new WelcomeFragment();
                 fragmentTransaction.replace(R.id.fragmentContainer, welcomeFragment);
+                iMainActivity.changeToolbarTitle(R.string.title_activity_main);
             } else if (id == R.id.tag_menu) {
                 // DELETE THIS LATER!!!!!!!!!!!!!!!!!
                 FirebaseAuth.getInstance().signOut();
@@ -62,23 +63,12 @@ public class MainActivityPresenter {
             } else if (id == R.id.registration_menu) {
                 AuthFragment authFragment = new AuthFragment();
                 fragmentTransaction.replace(R.id.fragmentContainer, authFragment);
+                iMainActivity.changeToolbarTitle(R.string.title_activity_auth);
             }
-            fragmentTransaction.addToBackStack(null);
             fragmentTransaction.commit();
         }
         drawer.closeDrawer(GravityCompat.START);
     }
 
-    public void loadMenuItems(Menu menu){
-
-        if(FirebaseAuth.getInstance().getCurrentUser() != null){
-            menu.findItem(R.id.registration_menu).setVisible(false);
-            menu.findItem(R.id.logout_menu).setVisible(true);
-        }
-        else if(FirebaseAuth.getInstance().getCurrentUser() == null){
-            menu.findItem(R.id.registration_menu).setVisible(true);
-            menu.findItem(R.id.logout_menu).setVisible(false);
-        }
-    }
 
 }
