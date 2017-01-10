@@ -31,6 +31,14 @@ public class MainActivityPresenter {
 
     public MainActivityPresenter(IMainActivity iMainActivity){
         this.iMainActivity = iMainActivity;
+        if (FirebaseAuth.getInstance().getCurrentUser() == null) {
+            MainActivity.navigationView.getMenu().findItem(R.id.logout_menu).setVisible(false);
+            MainActivity.navigationView.getMenu().findItem(R.id.registration_menu).setVisible(true);
+        }
+        else{
+            MainActivity.navigationView.getMenu().findItem(R.id.logout_menu).setVisible(true);
+            MainActivity.navigationView.getMenu().findItem(R.id.registration_menu).setVisible(false);
+        }
     }
 
     // !!!!!!UNDER THIS STATEMENT- SIGNALS FROM VIEW!!!!!!

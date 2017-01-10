@@ -41,7 +41,7 @@ public class MainActivity extends AppCompatActivity
     private DrawerLayout drawer;
     private FirebaseAuth mAuth;
     private MainActivityPresenter mainActivityPresenter;
-    public NavigationView navigationView;
+    public static NavigationView navigationView;
     private ContextMenu menu;
 
 
@@ -51,7 +51,7 @@ public class MainActivity extends AppCompatActivity
         setContentView(R.layout.activity_main);
 
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-        mainActivityPresenter = new MainActivityPresenter(this);
+
 
         FragmentManager fragmentManager = getFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
@@ -68,13 +68,9 @@ public class MainActivity extends AppCompatActivity
 
         drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.addDrawerListener(new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close){
-            @Override
-            public void onDrawerOpened(View drawerView) {
-                mainActivityPresenter.loadMenuItems(MainActivity.this.navigationView.getMenu());
-            }
-        });
+                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close));
 
+        mainActivityPresenter = new MainActivityPresenter(this);
 
     }
 

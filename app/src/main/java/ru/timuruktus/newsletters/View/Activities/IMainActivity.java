@@ -7,5 +7,6 @@ public interface IMainActivity {
 
     Fragment getCurrentFragment();
 
+
 }
 

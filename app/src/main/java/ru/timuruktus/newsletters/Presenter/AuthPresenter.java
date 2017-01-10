@@ -8,6 +8,7 @@ import com.androidquery.AQuery;
 
 import ru.timuruktus.newsletters.Model.Auth.EmailAuth;
 import ru.timuruktus.newsletters.R;
+import ru.timuruktus.newsletters.View.Activities.MainActivity;
 import ru.timuruktus.newsletters.View.Fragments.Interface.IAuthFragmentCallBack;
 import ru.timuruktus.newsletters.View.Fragments.WelcomeFragment;
 
@@ -55,6 +56,9 @@ public class AuthPresenter  {
         fragmentTransaction.addToBackStack(null);
         WelcomeFragment welcomeFragment = new WelcomeFragment();
         fragmentTransaction.replace(R.id.fragmentContainer, welcomeFragment);
+        fragmentTransaction.commit();
+        MainActivity.navigationView.getMenu().findItem(R.id.registration_menu).setVisible(false);
+        MainActivity.navigationView.getMenu().findItem(R.id.logout_menu).setVisible(true);
     }
 
 
@@ -75,6 +79,5 @@ public class AuthPresenter  {
      */
     public void onAuthSucceed(boolean isItWasLogin){
         iAuthFragmentCallBack.showChangeFragment(isItWasLogin);
-
     }
 }
