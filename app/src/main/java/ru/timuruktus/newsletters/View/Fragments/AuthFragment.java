@@ -38,7 +38,7 @@ public class AuthFragment extends Fragment implements IAuthFragmentCallBack,
     private AuthPresenter authPresenter;
     private TextView editTextEmail, editTextPass;
     private SliderLayout sliderShow;
-    private Button regBut;
+    private Button regBut, logBut;
     private ProgressBar loadingBar;
     private TextInputLayout emailInput, passInput;
     private View rootView;
@@ -62,9 +62,14 @@ public class AuthFragment extends Fragment implements IAuthFragmentCallBack,
 
         loadingBar = (ProgressBar) rootView.findViewById(R.id.loadingBar);
         loadingBar.setVisibility(View.INVISIBLE);
+
         regBut = (Button) rootView.findViewById(R.id.regBut);
         regBut.setOnClickListener(this);
         regBut.setTypeface(CF);
+        logBut = (Button) rootView.findViewById(R.id.logBut);
+        logBut.setOnClickListener(this);
+        logBut.setTypeface(CF);
+
         emailInput = (TextInputLayout) rootView.findViewById(R.id.emailInput);
         passInput = (TextInputLayout) rootView.findViewById(R.id.passInput);
         emailInput.setTypeface(CF);
@@ -110,7 +115,8 @@ public class AuthFragment extends Fragment implements IAuthFragmentCallBack,
      *                     if "false" - you were created your account
      */
     @Override
-    public void changeFragment(boolean isItWasLogin) {
+    public void showChangeFragment(boolean isItWasLogin) {
+        showLoadingBarCallBack(false);
         if(isItWasLogin) {
             Log.d("tag", "changeFragment(itWasLogin == true)");
             Toast.makeText(getActivity().getApplicationContext(), R.string.auth_success_login,
@@ -121,35 +127,35 @@ public class AuthFragment extends Fragment implements IAuthFragmentCallBack,
                     Toast.LENGTH_SHORT).show();
         }
         FragmentManager fragmentManager = getFragmentManager();
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.addToBackStack(null);
-        WelcomeFragment welcomeFragment = new WelcomeFragment();
-        fragmentTransaction.replace(R.id.fragmentContainer, welcomeFragment);
+        authPresenter.onChangeFragment(fragmentManager);
+
     }
 
     @Override
     public void showRegError() {
         Context context = getActivity().getApplicationContext();
         Toast.makeText(context, R.string.auth_failed, Toast.LENGTH_SHORT).show();
-        showLoadingBarCallBack(true);
+        showLoadingBarCallBack(false);
     }
 
     /**
      * Shows start/end of loading
      * CALLBACK!
-     * @param reverse - "true" if loading was stopped
+     * @param show - "true" if loading was started (NEEDED TO SHOW LOADING BAR)
      */
     @Override
-    public void showLoadingBarCallBack(boolean reverse) {
-        if(!reverse) {
+    public void showLoadingBarCallBack(boolean show) {
+        if(show) {
             emailInput.setVisibility(View.INVISIBLE);
             passInput.setVisibility(View.INVISIBLE);
             regBut.setVisibility(View.INVISIBLE);
+            logBut.setVisibility(View.INVISIBLE);
             loadingBar.setVisibility(View.VISIBLE);
         }else{
             emailInput.setVisibility(View.VISIBLE);
             passInput.setVisibility(View.VISIBLE);
             regBut.setVisibility(View.VISIBLE);
+            logBut.setVisibility(View.VISIBLE);
             loadingBar.setVisibility(View.INVISIBLE);
         }
     }
@@ -163,6 +169,9 @@ public class AuthFragment extends Fragment implements IAuthFragmentCallBack,
         int id = v.getId();
         if(id == R.id.regBut){
             authPresenter.onRegButClick(editTextEmail.getText().toString(), editTextPass.getText().toString());
+        }
+        else if(id == R.id.logBut){
+            authPresenter.onLoginButClick(editTextEmail.getText().toString(), editTextPass.getText().toString());
         }
     }
 

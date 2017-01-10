@@ -25,6 +25,10 @@ public class EmailAuth {
     private String email,pass;
     private AuthPresenter authPresenter;
 
+    public enum StartAction{
+        LOGIN, REGISTER
+    }
+
 
     public EmailAuth(String email, String pass, AuthPresenter authPresenter){
         this.email = email;
@@ -32,18 +36,18 @@ public class EmailAuth {
         this.authPresenter = authPresenter;
     }
 
-    public EmailAuth(){}
-
     /**
      * Starts authentication
      */
-    public void startAuth(){
+    public void startAuth(StartAction action){
         initListenerAndDB();
-        if(!signIn()){
-            createAccount();
-        }else{
-            authPresenter.onAuthSucceed(true);
+        if(action == StartAction.LOGIN) {
+            signIn();
         }
+        if(action == StartAction.REGISTER){
+            createAccount();
+        }
+
     }
 
     /**
@@ -73,6 +77,7 @@ public class EmailAuth {
 
     /**
      * Used to create a new account
+     * By the end call AuthPresenter callback's
      */
     private void createAccount() {
         Log.d(TAG, "createAccount:" + email);
@@ -93,35 +98,36 @@ public class EmailAuth {
                         if (!task.isSuccessful()) {
                             Log.e(TAG,"mAuth.createUserWithEmailAndPassword.!task.isSuccessful()");
                             authPresenter.onAuthFailed();
+                            return;
                         }
+                        signIn();
+                        while (FirebaseAuth.getInstance().getCurrentUser() == null){
+                            Log.d(TAG, "mAuth,onCompleteListener. Waiting for login...");
+                        }
+                        FirebaseAuth.getInstance().getCurrentUser().sendEmailVerification()
+                                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<Void> task) {
+                                        if (task.isSuccessful()) {
+                                            Log.d(TAG, "Email sent.");
+                                        }
+                                    }
+                                });
+                        authPresenter.onAuthSucceed(false);
                     }
                 });
         // [END create_user_with_email]
-            signIn();
-        if(FirebaseAuth.getInstance().getCurrentUser() != null) {
-            FirebaseAuth.getInstance().getCurrentUser().sendEmailVerification()
-                    .addOnCompleteListener(new OnCompleteListener<Void>() {
-                        @Override
-                        public void onComplete(@NonNull Task<Void> task) {
-                            if (task.isSuccessful()) {
-                                Log.d(TAG, "Email sent.");
-                            }
-                        }
-                    });
-        }
-        authPresenter.onAuthSucceed(false);
     }
 
     /**
      * Used to singIn
-     * @return "false" if login was unsuccessful
-     *          "true" if login was successful f.e.
-     *          user hasn't been find in database
+     * By the end call AuthPresenter callback's
      */
-    private boolean signIn() {
+    private void signIn() {
         Log.d(TAG, "signIn:" + email);
         if (!validateForm()) {
-            return false;
+            authPresenter.onAuthFailed();
+            return;
         }
 
         // [START sign_in_with_email]
@@ -136,19 +142,14 @@ public class EmailAuth {
                         // signed in user can be handled in the listener.
                         if (!task.isSuccessful()) {
                             Log.w(TAG, "signInWithEmail:failed", task.getException());
+                            authPresenter.onAuthFailed();
                             return;
                         }
+                        authPresenter.onAuthSucceed(true);
+
                     }
                 });
         // [END sign_in_with_email]
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        if (user != null) {
-            // User is signed in
-            return true;
-        } else {
-            // No user is signed in
-            return false;
-        }
     }
 
     /**
