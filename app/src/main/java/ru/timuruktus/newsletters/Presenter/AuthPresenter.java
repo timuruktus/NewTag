@@ -4,20 +4,19 @@ package ru.timuruktus.newsletters.Presenter;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 
-import com.androidquery.AQuery;
-
 import ru.timuruktus.newsletters.Model.Auth.EmailAuth;
 import ru.timuruktus.newsletters.R;
+import ru.timuruktus.newsletters.View.Activities.IMainActivity;
 import ru.timuruktus.newsletters.View.Activities.MainActivity;
-import ru.timuruktus.newsletters.View.Fragments.Interface.IAuthFragmentCallBack;
+import ru.timuruktus.newsletters.View.Fragments.Interface.IAuthFragment;
 import ru.timuruktus.newsletters.View.Fragments.WelcomeFragment;
 
 public class AuthPresenter  {
 
-    IAuthFragmentCallBack iAuthFragmentCallBack;
+    IAuthFragment iAuthFragment;
 
-    public AuthPresenter(IAuthFragmentCallBack iAuthFragmentCallBack){
-        this.iAuthFragmentCallBack = iAuthFragmentCallBack;
+    public AuthPresenter(IAuthFragment iAuthFragment){
+        this.iAuthFragment = iAuthFragment;
 
     }
 
@@ -29,7 +28,7 @@ public class AuthPresenter  {
      * @param pass - password text
      */
     public void onRegButClick(String email, String pass){
-        iAuthFragmentCallBack.showLoadingBarCallBack(true);
+        iAuthFragment.showLoadingBarCallBack(true);
         EmailAuth auth = new EmailAuth(email,pass, this);
         auth.startAuth(EmailAuth.StartAction.REGISTER);
     }
@@ -41,7 +40,7 @@ public class AuthPresenter  {
      * @param pass - password text
      */
     public void onLoginButClick(String email, String pass){
-        iAuthFragmentCallBack.showLoadingBarCallBack(true);
+        iAuthFragment.showLoadingBarCallBack(true);
         EmailAuth auth = new EmailAuth(email,pass, this);
         auth.startAuth(EmailAuth.StartAction.LOGIN);
     }
@@ -52,11 +51,7 @@ public class AuthPresenter  {
      * Goodnight, sweet prince ;)
      */
     public void onChangeFragment(FragmentManager fm) {
-        FragmentTransaction fragmentTransaction = fm.beginTransaction();
-        fragmentTransaction.addToBackStack(null);
-        WelcomeFragment welcomeFragment = new WelcomeFragment();
-        fragmentTransaction.replace(R.id.fragmentContainer, welcomeFragment);
-        fragmentTransaction.commit();
+        MainActivityPresenter.changeFragment(fm, new WelcomeFragment(), false);
         MainActivity.navigationView.getMenu().findItem(R.id.registration_menu).setVisible(false);
         MainActivity.navigationView.getMenu().findItem(R.id.logout_menu).setVisible(true);
     }
@@ -68,7 +63,7 @@ public class AuthPresenter  {
      * If auth was failed (wrong email)/password, etc.)
      */
     public void onAuthFailed(){
-        iAuthFragmentCallBack.showRegError();
+        iAuthFragment.showRegError();
     }
 
     /**
@@ -78,6 +73,6 @@ public class AuthPresenter  {
      *                     if "false" - you were created your account
      */
     public void onAuthSucceed(boolean isItWasLogin){
-        iAuthFragmentCallBack.showChangeFragment(isItWasLogin);
+        iAuthFragment.showChangeFragment(isItWasLogin);
     }
 }

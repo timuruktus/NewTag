@@ -16,6 +16,8 @@ import org.greenrobot.eventbus.EventBus;
 
 import ru.timuruktus.newsletters.Presenter.WelcomePresenter;
 import ru.timuruktus.newsletters.R;
+import ru.timuruktus.newsletters.View.Activities.IMainActivity;
+import ru.timuruktus.newsletters.View.Activities.MainActivity;
 import ru.timuruktus.newsletters.View.Fragments.Interface.IWelcomeFragment;
 
 public class WelcomeFragment extends Fragment implements IWelcomeFragment {
@@ -31,6 +33,8 @@ public class WelcomeFragment extends Fragment implements IWelcomeFragment {
                              Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         WelcomePresenter wp = new WelcomePresenter(this);
+        IMainActivity iMainActivity = (MainActivity) getActivity();
+        iMainActivity.changeToolbarTitle(R.string.title_activity_main);
         View rootView =
                 inflater.inflate(R.layout.welcome_fragment, container, false);
         FloatingActionButton fab = (FloatingActionButton) rootView.findViewById(R.id.fab);

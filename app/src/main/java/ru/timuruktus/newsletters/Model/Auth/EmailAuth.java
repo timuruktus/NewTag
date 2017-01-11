@@ -10,7 +10,9 @@ import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.EmailAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
@@ -20,7 +22,6 @@ import ru.timuruktus.newsletters.View.Activities.MainActivity;
 
 public class EmailAuth {
     private FirebaseAuth mAuth;
-    private FirebaseAuth.AuthStateListener mAuthListener;
     public static final String TAG = "tag";
     private String email,pass;
     private AuthPresenter authPresenter;
@@ -40,7 +41,7 @@ public class EmailAuth {
      * Starts authentication
      */
     public void startAuth(StartAction action){
-        initListenerAndDB();
+        mAuth = FirebaseAuth.getInstance();
         if(action == StartAction.LOGIN) {
             signIn();
         }
@@ -50,30 +51,8 @@ public class EmailAuth {
 
     }
 
-    /**
-     * Init's login/logout listener and
-     * Firebase dataBase
-     */
-    public void initListenerAndDB(){
-        mAuth = FirebaseAuth.getInstance();
-        // [START auth_state_listener]
-        mAuthListener = new FirebaseAuth.AuthStateListener() {
-            @Override
-            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                FirebaseUser user = firebaseAuth.getCurrentUser();
-                if (user != null) {
-                    // User is signed in
-                    Log.d(TAG, "onAuthStateChanged:signed_in:" + user.getUid());
 
-                } else {
-                    // User is signed out
-                    Log.d(TAG, "onAuthStateChanged:signed_out");
-                }
-            }
-        };
-        // [END auth_state_listener]
-        mAuth.addAuthStateListener(mAuthListener);
-    }
+
 
     /**
      * Used to create a new account
@@ -178,6 +157,25 @@ public class EmailAuth {
         if (!email.contains(".")) valid = false;
         if(pass.length()<6) valid = false;
         return valid;
+    }
+
+    public static void fireBaseAuthLoginFailedListener(){
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+
+        // Get auth credentials from the user for re-authentication. The example below shows
+        // email and password credentials but there are multiple possible providers,
+        // such as GoogleAuthProvider or FacebookAuthProvider.
+        AuthCredential credential = EmailAuthProvider
+                .getCredential("user@example.com", "password1234");
+
+        // Prompt the user to re-provide their sign-in credentials
+        user.reauthenticate(credential)
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        Log.d(TAG, "User re-authenticated.");
+                    }
+                });
     }
 
 }

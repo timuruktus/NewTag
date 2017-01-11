@@ -3,16 +3,11 @@ package ru.timuruktus.newsletters.View.Fragments;
 
 import android.app.Fragment;
 import android.app.FragmentManager;
-import android.app.FragmentTransaction;
 import android.content.Context;
 import android.graphics.Typeface;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputLayout;
-import android.support.v4.widget.DrawerLayout;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,17 +17,16 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.daimajia.slider.library.Indicators.PagerIndicator;
 import com.daimajia.slider.library.SliderLayout;
 import com.daimajia.slider.library.SliderTypes.TextSliderView;
 
-import java.io.IOException;
-
 import ru.timuruktus.newsletters.Presenter.AuthPresenter;
 import ru.timuruktus.newsletters.R;
-import ru.timuruktus.newsletters.View.Fragments.Interface.IAuthFragmentCallBack;
+import ru.timuruktus.newsletters.View.Activities.IMainActivity;
+import ru.timuruktus.newsletters.View.Activities.MainActivity;
+import ru.timuruktus.newsletters.View.Fragments.Interface.IAuthFragment;
 
-public class AuthFragment extends Fragment implements IAuthFragmentCallBack,
+public class AuthFragment extends Fragment implements IAuthFragment,
                         View.OnClickListener{
 
     private AuthPresenter authPresenter;
@@ -56,6 +50,9 @@ public class AuthFragment extends Fragment implements IAuthFragmentCallBack,
         super.onCreate(savedInstanceState);
         rootView =
                 inflater.inflate(R.layout.auth_fragment, container, false);
+
+        IMainActivity iMainActivity = (MainActivity) getActivity();
+        iMainActivity.changeToolbarTitle(R.string.title_activity_auth);
 
         String custom_font = "fonts/Roboto-Italic.ttf";
         Typeface CF = Typeface.createFromAsset(getActivity().getAssets(), custom_font);
