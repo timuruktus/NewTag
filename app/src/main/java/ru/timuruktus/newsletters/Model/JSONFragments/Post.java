@@ -7,15 +7,30 @@ public class Post {
     private String name;
     private String photoUrl;
     private String tags;
+    private String id;
 
     public Post() {
     }
 
-    public Post(String text, String name, String photoUrl, String tags) {
+    public Post(String text, String name, String photoUrl, String tags, String id) {
         this.text = text;
         this.name = name;
         this.photoUrl = photoUrl;
         this.tags = tags;
+        this.id = id;
+    }
+
+    public Post(String text, String name, String id) {
+        this.text = text;
+        this.name = name;
+        this.id = id;
+    }
+
+    public Post(String text, String name, String photoUrl, String id) {
+        this.text = text;
+        this.name = name;
+        this.photoUrl = photoUrl;
+        this.id = id;
     }
 
     public String getText() {

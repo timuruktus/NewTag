@@ -18,9 +18,17 @@ import android.view.MenuItem;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
+
+import ru.timuruktus.newsletters.Model.FireBase.Listeners.FireBaseListeners;
+import ru.timuruktus.newsletters.Model.JSONFragments.Post;
 import ru.timuruktus.newsletters.R;
 import ru.timuruktus.newsletters.View.Activities.IMainActivity;
 import ru.timuruktus.newsletters.View.Activities.MainActivity;
@@ -31,8 +39,12 @@ public class MainActivityPresenter {
 
     private IMainActivity iMainActivity;
     public static final String TAG = "tag";
+    public static MainActivityPresenterAdapter mainActivityPresenterAdapter;
+    private FireBaseListeners fireBaseListeners;
 
     public MainActivityPresenter(IMainActivity iMainActivity){
+        readUserEmailFromFireBase();
+        this.mainActivityPresenterAdapter = new MainActivityPresenterAdapter(this);
         this.iMainActivity = iMainActivity;
         if (FirebaseAuth.getInstance().getCurrentUser() == null) {
             MainActivity.navigationView.getMenu().findItem(R.id.logout_menu).setVisible(false);
@@ -65,6 +77,7 @@ public class MainActivityPresenter {
                 changeFragment(fragmentManager, new WelcomeFragment(), true);
                 MainActivity.navigationView.getMenu().findItem(R.id.registration_menu).setVisible(true);
                 MainActivity.navigationView.getMenu().findItem(R.id.logout_menu).setVisible(false);
+                changeEmailMenu("");
                 Log.d(TAG, "LOGOUT FROM MENU");
 
             }
@@ -72,7 +85,7 @@ public class MainActivityPresenter {
         drawer.closeDrawer(GravityCompat.START);
     }
 
-    public static void changeFragment(FragmentManager fragmentManager, Fragment fragment,
+    public void changeFragment(FragmentManager fragmentManager, Fragment fragment,
                                       boolean addToBachStack){
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         if(addToBachStack) {fragmentTransaction.addToBackStack(null);}
@@ -82,24 +95,17 @@ public class MainActivityPresenter {
 
     public void initFirebaseAuthListener(){
         Log.d(TAG, "AuthListener was initialised");
-        FirebaseAuth mAuth = FirebaseAuth.getInstance();
-        // [START auth_state_listener]
-        FirebaseAuth.AuthStateListener mAuthListener = new FirebaseAuth.AuthStateListener() {
-            @Override
-            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                FirebaseUser user = firebaseAuth.getCurrentUser();
-                if (user != null) {
-                    // User is signed in
-                    Log.d(TAG, "onAuthStateChanged:signed_in:" + user.getUid());
+        fireBaseListeners = new FireBaseListeners();
+        fireBaseListeners.initAuthListener();
+    }
 
-                } else {
-                    // User is signed out
-                    Log.d(TAG, "onAuthStateChanged:signed_out");
-                }
-            }
-        };
-        // [END auth_state_listener]
-        mAuth.addAuthStateListener(mAuthListener);
+    public void readUserEmailFromFireBase(){
+
+
+    }
+
+    public void changeEmailMenu(String email){
+        iMainActivity.changeMenuEmail(email);
     }
 
 

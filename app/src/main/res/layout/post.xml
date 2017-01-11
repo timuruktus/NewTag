@@ -1,49 +1,92 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <LinearLayout
+
+    <ImageView
+        android:layout_width="193dp"
+        android:layout_height="193dp"
+        android:id="@+id/newsImage"
+        android:layout_gravity="left|top"
+        android:background="#bcbcbc"
+        android:layout_marginTop="60dp"
+        android:layout_marginLeft="10dp" />
+
+    <TextView
+        android:layout_width="164dp"
+        android:layout_height="193dp"
+        android:text="New Text"
+        android:id="@+id/newsStart"
+        android:layout_gravity="right"
+        android:background="#f33d3d"
+        android:layout_marginTop="60dp"
+        android:layout_marginRight="10dp" />
+
+    <TextView
+        android:layout_width="1dp"
+        android:layout_height="193dp"
+        android:id="@+id/stick"
+        android:layout_gravity="center_horizontal"
+        android:background="#000000"
+        android:layout_marginLeft="15dp"
+        android:layout_marginTop="60dp" />
+
+    <TextView
+        android:layout_width="193dp"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Large Text"
+        android:id="@+id/title"
+        android:layout_gravity="left"
+        android:layout_marginTop="160dp"
+        android:layout_marginLeft="10dp" />
+
+    <TextView
+        android:layout_width="195dp"
+        android:layout_height="64dp"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="Medium Text"
+        android:id="@+id/preStart"
+        android:layout_gravity="left"
+        android:layout_marginTop="190dp"
+        android:layout_marginLeft="10dp" />
+
+    <ImageView
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:id="@+id/authorImage"
+        android:layout_gravity="left|top"
+        android:background="#868484"
+        android:layout_marginLeft="10dp" />
+
+    <TextView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="center_vertical"
-        android:orientation="horizontal">
+        android:layout_height="wrap_content"
+        android:text="New Text"
+        android:id="@+id/name"
+        android:layout_gravity="top"
+        android:layout_marginLeft="70dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginRight="55dp" />
 
-        <de.hdodenhof.circleimageview.CircleImageView
-            android:id="@+id/userImageView"
-            android:layout_width="36dp"
-            android:layout_height="36dp"
-            android:src="@drawable/ic_menu_send"/>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="New Text"
+        android:id="@+id/textView3"
+        android:layout_gravity="left|center_horizontal"
+        android:layout_marginTop="265dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp" />
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:gravity="center_vertical"
-            android:orientation="vertical">
+    <Button
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/like"
+        android:layout_gravity="right|top"
+        android:layout_marginRight="10dp" />
 
-            <TextView
-                android:id="@+id/msgTextView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="0"
-                android:textAppearance="?android:attr/textAppearanceLarge"/>
-
-            <TextView
-                android:id="@+id/userTextView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="0"
-                android:textAppearance="?android:attr/textAppearanceSmall"/>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/tagsTextView" />
-        </LinearLayout>
-
-    </LinearLayout>
-
-
-</LinearLayout>
+</FrameLayout>

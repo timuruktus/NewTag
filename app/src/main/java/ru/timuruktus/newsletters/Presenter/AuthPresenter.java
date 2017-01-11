@@ -2,18 +2,17 @@ package ru.timuruktus.newsletters.Presenter;
 
 
 import android.app.FragmentManager;
-import android.app.FragmentTransaction;
 
-import ru.timuruktus.newsletters.Model.Auth.EmailAuth;
+import ru.timuruktus.newsletters.Model.FireBase.Auth.EmailAuth;
 import ru.timuruktus.newsletters.R;
-import ru.timuruktus.newsletters.View.Activities.IMainActivity;
 import ru.timuruktus.newsletters.View.Activities.MainActivity;
 import ru.timuruktus.newsletters.View.Fragments.Interface.IAuthFragment;
 import ru.timuruktus.newsletters.View.Fragments.WelcomeFragment;
 
 public class AuthPresenter  {
 
-    IAuthFragment iAuthFragment;
+    private IAuthFragment iAuthFragment;
+    private String email;
 
     public AuthPresenter(IAuthFragment iAuthFragment){
         this.iAuthFragment = iAuthFragment;
@@ -40,6 +39,7 @@ public class AuthPresenter  {
      * @param pass - password text
      */
     public void onLoginButClick(String email, String pass){
+        this.email = email;
         iAuthFragment.showLoadingBarCallBack(true);
         EmailAuth auth = new EmailAuth(email,pass, this);
         auth.startAuth(EmailAuth.StartAction.LOGIN);
@@ -51,7 +51,8 @@ public class AuthPresenter  {
      * Goodnight, sweet prince ;)
      */
     public void onChangeFragment(FragmentManager fm) {
-        MainActivityPresenter.changeFragment(fm, new WelcomeFragment(), false);
+        MainActivityPresenter.mainActivityPresenterAdapter.changeEmailMenu(email);
+        MainActivityPresenter.mainActivityPresenterAdapter.changeFragment(fm, new WelcomeFragment(), false);
         MainActivity.navigationView.getMenu().findItem(R.id.registration_menu).setVisible(false);
         MainActivity.navigationView.getMenu().findItem(R.id.logout_menu).setVisible(true);
     }

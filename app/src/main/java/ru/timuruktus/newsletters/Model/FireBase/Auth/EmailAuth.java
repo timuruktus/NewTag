@@ -1,12 +1,9 @@
-package ru.timuruktus.newsletters.Model.Auth;
+package ru.timuruktus.newsletters.Model.FireBase.Auth;
 
 
-import android.app.Activity;
-import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -15,16 +12,21 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.EmailAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
+import java.util.Random;
+
+import ru.timuruktus.newsletters.Model.JSONFragments.Post;
+import ru.timuruktus.newsletters.Model.JSONFragments.UserAccount;
 import ru.timuruktus.newsletters.Presenter.AuthPresenter;
-import ru.timuruktus.newsletters.R;
-import ru.timuruktus.newsletters.View.Activities.MainActivity;
 
 public class EmailAuth {
     private FirebaseAuth mAuth;
     public static final String TAG = "tag";
     private String email,pass;
     private AuthPresenter authPresenter;
+    private DatabaseReference mDatabase;
 
     public enum StartAction{
         LOGIN, REGISTER
@@ -78,6 +80,7 @@ public class EmailAuth {
                             authPresenter.onAuthFailed();
                             return;
                         }
+
                         signIn();
                         while (FirebaseAuth.getInstance().getCurrentUser() == null){
                             Log.d(TAG, "mAuth,onCompleteListener. Waiting for login...");
@@ -91,6 +94,7 @@ public class EmailAuth {
                                         }
                                     }
                                 });
+                        writeNewUser(generateRandomUserId(), email);
                         authPresenter.onAuthSucceed(false);
                     }
                 });
@@ -176,5 +180,22 @@ public class EmailAuth {
                     }
                 });
     }
+
+    public static String generateRandomUserId(){
+        String valid = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
+        char[] validArr = valid.toCharArray();
+        Random r = new Random();
+        String randomUserId = validArr[r.nextInt(36)] + r.nextInt() + validArr[r.nextInt(36)] + r.nextInt() + "";
+        // TODO CHECK WHAT THAT METHOD RETURN
+        return randomUserId;
+    }
+
+    private void writeNewUser(String userId, String email) {
+        // TODO FIX BUG: CANNOT SEND AN EMAIL TO FIREBASE DB
+        UserAccount user = new UserAccount(email, userId);
+        mDatabase = FirebaseDatabase.getInstance().getReference();
+        mDatabase.child("Users").child(userId).setValue(user);
+    }
+
 
 }
