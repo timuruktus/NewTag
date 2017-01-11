@@ -1,4 +1,10 @@
 # NewTag
 
 
-Current Version - v.0.0.2
+Current Versions: 
+[STABLE]
+v.0.0.2 
+
+
+[UNSTABLE]
+v.0.0.3
