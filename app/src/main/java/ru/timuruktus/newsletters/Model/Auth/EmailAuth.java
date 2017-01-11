@@ -30,7 +30,6 @@ public class EmailAuth {
         LOGIN, REGISTER
     }
 
-
     public EmailAuth(String email, String pass, AuthPresenter authPresenter){
         this.email = email;
         this.pass = pass;
