@@ -8,6 +8,7 @@ public interface IMainActivity {
     Fragment getCurrentFragment();
     void changeToolbarTitle(int resId);
     void changeMenuEmail(String email);
+    void changeUsernameMenu(String username);
 
 
 }

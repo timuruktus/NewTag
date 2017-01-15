@@ -14,6 +14,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.gson.Gson;
 
 import java.util.Random;
 
@@ -94,7 +95,7 @@ public class EmailAuth {
                                         }
                                     }
                                 });
-                        writeNewUser(generateRandomUserId(), email);
+                        writeNewUser(FirebaseAuth.getInstance().getCurrentUser().getUid(), email);
                         authPresenter.onAuthSucceed(false);
                     }
                 });
@@ -158,18 +159,18 @@ public class EmailAuth {
         if (TextUtils.isDigitsOnly(email)) valid = false;
         if (!email.contains("@")) valid = false;
         if (!email.contains(".")) valid = false;
-        if(pass.length()<6) valid = false;
+        if (pass.length()<6) valid = false;
         return valid;
     }
 
-    public static void fireBaseAuthLoginFailedListener(){
+    public static void relog(String email, String pass){
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
         // Get auth credentials from the user for re-authentication. The example below shows
         // email and password credentials but there are multiple possible providers,
         // such as GoogleAuthProvider or FacebookAuthProvider.
         AuthCredential credential = EmailAuthProvider
-                .getCredential("user@example.com", "password1234");
+                .getCredential(email, pass);
 
         // Prompt the user to re-provide their sign-in credentials
         user.reauthenticate(credential)
@@ -181,18 +182,10 @@ public class EmailAuth {
                 });
     }
 
-    public static String generateRandomUserId(){
-        String valid = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
-        char[] validArr = valid.toCharArray();
-        Random r = new Random();
-        String randomUserId = validArr[r.nextInt(36)] + r.nextInt() + validArr[r.nextInt(36)] + r.nextInt() + "";
-        // TODO CHECK WHAT THAT METHOD RETURN
-        return randomUserId;
-    }
 
     private void writeNewUser(String userId, String email) {
-        // TODO FIX BUG: CANNOT SEND AN EMAIL TO FIREBASE DB
-        UserAccount user = new UserAccount(email, userId);
+        Log.d(TAG, "Email in writeNewUser(): " + email);
+        UserAccount user = new UserAccount(email);
         mDatabase = FirebaseDatabase.getInstance().getReference();
         mDatabase.child("Users").child(userId).setValue(user);
     }

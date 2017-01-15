@@ -1,20 +1,23 @@
 package ru.timuruktus.newsletters.Model.JSONFragments;
 
 
+import android.util.Log;
 
 public class UserAccount {
 
+    public final static String TAG = "tag";
+
     String username;
     int rating;
+
+
     String email;
-    String id;
 
     public UserAccount(){}
 
-    public UserAccount(String email, String id){
-        // TODO CHECK WHAT'S WRONG- EMAIL COULD BE EMPTY
+    public UserAccount(String email){
+        Log.d(TAG, "Email is UserAccount constructor: " + email);
         this.email = email;
-        this.id = id;
         this.rating = 0;
     }
 
@@ -32,6 +35,14 @@ public class UserAccount {
 
     public void setRating(int rating) {
         this.rating = rating;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
 

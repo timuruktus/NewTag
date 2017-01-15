@@ -5,5 +5,5 @@ public interface IAuthFragment {
 
     void showChangeFragment(boolean isItWasLogin);
     void showRegError();
-    void showLoadingBarCallBack(boolean hide);
+    void showLoadingBar(boolean hide);
 }

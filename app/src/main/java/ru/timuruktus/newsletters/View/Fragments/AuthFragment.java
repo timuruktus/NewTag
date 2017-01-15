@@ -115,7 +115,7 @@ public class AuthFragment extends Fragment implements IAuthFragment,
      */
     @Override
     public void showChangeFragment(boolean isItWasLogin) {
-        showLoadingBarCallBack(false);
+        showLoadingBar(false);
         if(isItWasLogin) {
             Log.d("tag", "changeFragment(itWasLogin == true)");
             Toast.makeText(getActivity().getApplicationContext(), R.string.auth_success_login,
@@ -130,20 +130,23 @@ public class AuthFragment extends Fragment implements IAuthFragment,
 
     }
 
+    /**
+     * Shows an error Toast message and make loading bar invisible
+     *
+     */
     @Override
     public void showRegError() {
         Context context = getActivity().getApplicationContext();
         Toast.makeText(context, R.string.auth_failed, Toast.LENGTH_SHORT).show();
-        showLoadingBarCallBack(false);
+        showLoadingBar(false);
     }
 
     /**
      * Shows start/end of loading
-     * CALLBACK!
      * @param show - "true" if loading was started (NEEDED TO SHOW LOADING BAR)
      */
     @Override
-    public void showLoadingBarCallBack(boolean show) {
+    public void showLoadingBar(boolean show) {
         if(show) {
             emailInput.setVisibility(View.INVISIBLE);
             passInput.setVisibility(View.INVISIBLE);

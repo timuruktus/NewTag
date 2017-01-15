@@ -36,8 +36,7 @@ import ru.timuruktus.newsletters.View.Fragments.WelcomeFragment;
  * BY KHASANOV TIMUR (16)
  */
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener, IMainActivity,
-        DrawerLayout.DrawerListener{
+        implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener, IMainActivity{
 
     public final static String TAG = "tag";
     private DrawerLayout drawer;
@@ -127,26 +126,6 @@ public class MainActivity extends AppCompatActivity
     }
 
     @Override
-    public void onDrawerSlide(View drawerView, float slideOffset) {
-
-    }
-
-    @Override
-    public void onDrawerOpened(View drawerView) {
-
-    }
-
-    @Override
-    public void onDrawerClosed(View drawerView) {
-
-    }
-
-    @Override
-    public void onDrawerStateChanged(int newState) {
-
-    }
-
-    @Override
     public Fragment getCurrentFragment() {
         Fragment frag = getFragmentManager().findFragmentById(R.id.fragmentContainer);
         return frag;
@@ -161,6 +140,12 @@ public class MainActivity extends AppCompatActivity
     public void changeMenuEmail(String email) {
         TextView userEmail = (TextView) findViewById(R.id.userEmail);
         userEmail.setText(email);
+    }
+
+    @Override
+    public void changeUsernameMenu(String username) {
+        TextView userName = (TextView) findViewById(R.id.userName);
+        userName.setText(username);
     }
 
 }

@@ -27,7 +27,8 @@ public class AuthPresenter  {
      * @param pass - password text
      */
     public void onRegButClick(String email, String pass){
-        iAuthFragment.showLoadingBarCallBack(true);
+        this.email = email;
+        iAuthFragment.showLoadingBar(true);
         EmailAuth auth = new EmailAuth(email,pass, this);
         auth.startAuth(EmailAuth.StartAction.REGISTER);
     }
@@ -40,7 +41,7 @@ public class AuthPresenter  {
      */
     public void onLoginButClick(String email, String pass){
         this.email = email;
-        iAuthFragment.showLoadingBarCallBack(true);
+        iAuthFragment.showLoadingBar(true);
         EmailAuth auth = new EmailAuth(email,pass, this);
         auth.startAuth(EmailAuth.StartAction.LOGIN);
     }
@@ -48,13 +49,12 @@ public class AuthPresenter  {
     /**
      * Called when AuthFragment
      * should go away.
-     * Goodnight, sweet prince ;)
+     * <joke>Goodnight, sweet prince ;)</joke>
      */
     public void onChangeFragment(FragmentManager fm) {
         MainActivityPresenter.mainActivityPresenterAdapter.changeEmailMenu(email);
         MainActivityPresenter.mainActivityPresenterAdapter.changeFragment(fm, new WelcomeFragment(), false);
-        MainActivity.navigationView.getMenu().findItem(R.id.registration_menu).setVisible(false);
-        MainActivity.navigationView.getMenu().findItem(R.id.logout_menu).setVisible(true);
+        MainActivityPresenter.mainActivityPresenterAdapter.hideLogout(false);
     }
 
 

@@ -5,88 +5,83 @@
     android:orientation="vertical">
 
 
-    <ImageView
-        android:layout_width="193dp"
-        android:layout_height="193dp"
-        android:id="@+id/newsImage"
-        android:layout_gravity="left|top"
-        android:background="#bcbcbc"
-        android:layout_marginTop="60dp"
-        android:layout_marginLeft="10dp" />
-
     <TextView
-        android:layout_width="164dp"
-        android:layout_height="193dp"
+        android:layout_width="match_parent"
+        android:layout_height="147dp"
         android:text="New Text"
-        android:id="@+id/newsStart"
-        android:layout_gravity="right"
+        android:id="@+id/text"
+        android:layout_gravity="left|bottom"
         android:background="#f33d3d"
-        android:layout_marginTop="60dp"
-        android:layout_marginRight="10dp" />
-
-    <TextView
-        android:layout_width="1dp"
-        android:layout_height="193dp"
-        android:id="@+id/stick"
-        android:layout_gravity="center_horizontal"
-        android:background="#000000"
-        android:layout_marginLeft="15dp"
-        android:layout_marginTop="60dp" />
-
-    <TextView
-        android:layout_width="193dp"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="Large Text"
-        android:id="@+id/title"
-        android:layout_gravity="left"
-        android:layout_marginTop="160dp"
-        android:layout_marginLeft="10dp" />
-
-    <TextView
-        android:layout_width="195dp"
-        android:layout_height="64dp"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="Medium Text"
-        android:id="@+id/preStart"
-        android:layout_gravity="left"
-        android:layout_marginTop="190dp"
-        android:layout_marginLeft="10dp" />
-
-    <ImageView
-        android:layout_width="60dp"
-        android:layout_height="60dp"
-        android:id="@+id/authorImage"
-        android:layout_gravity="left|top"
-        android:background="#868484"
-        android:layout_marginLeft="10dp" />
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="New Text"
-        android:id="@+id/name"
-        android:layout_gravity="top"
-        android:layout_marginLeft="70dp"
-        android:layout_marginTop="20dp"
-        android:layout_marginRight="55dp" />
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="New Text"
-        android:id="@+id/textView3"
-        android:layout_gravity="left|center_horizontal"
-        android:layout_marginTop="265dp"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp" />
 
-    <Button
-        style="?android:attr/buttonStyleSmall"
-        android:layout_width="wrap_content"
+    <RelativeLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/like"
-        android:layout_gravity="right|top"
-        android:layout_marginRight="10dp" />
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp">
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="364dp"
+            android:id="@+id/postImage"
+            android:layout_gravity="left|top"
+            android:background="#bcbcbc" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="Large Text"
+            android:id="@+id/title"
+            android:layout_gravity="left"
+            android:textSize="30dp" />
+
+        <ImageView
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:id="@+id/authorImage"
+            android:layout_gravity="left|top"
+            android:background="#868484"
+            android:layout_alignLeft="@+id/postImage"
+            android:layout_alignBottom="@+id/postImage" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="New Text"
+            android:id="@+id/name"
+            android:layout_gravity="top"
+            android:layout_toRightOf="@+id/authorImage"
+            android:layout_alignTop="@+id/authorImage" />
+
+        <Button
+            style="?android:attr/buttonStyleSmall"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:id="@+id/like"
+            android:layout_gravity="right|top"
+            android:enabled="true"
+            android:layout_alignParentStart="false"
+            android:layout_toLeftOf="@+id/vkLike"
+            android:layout_alignBottom="@+id/postImage"
+            android:foreground="@drawable/ic_like_button"
+            android:foregroundGravity="center" />
+
+        <ImageView
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:id="@+id/vkLike"
+            android:layout_gravity="right|center_vertical"
+            android:src="@drawable/vk_share_button"
+            android:cropToPadding="false"
+            android:layout_alignParentEnd="false"
+            android:layout_alignParentStart="false"
+            android:layout_alignParentBottom="false"
+            android:layout_alignParentLeft="false"
+            android:layout_alignRight="@+id/postImage"
+            android:layout_alignBottom="@+id/postImage" />
+
+    </RelativeLayout>
 
 </FrameLayout>

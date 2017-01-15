@@ -4,33 +4,35 @@ package ru.timuruktus.newsletters.Model.JSONFragments;
 public class Post {
 
     private String text;
-    private String name;
-    private String photoUrl;
-    private String tags;
+    private String newsImageUrl;
+    private String authorImageUrl;
+    private String tag;
     private String id;
+    private String title;
+    private String author; //Author- authId
 
     public Post() {
     }
 
-    public Post(String text, String name, String photoUrl, String tags, String id) {
+    public Post(String text, String newsImageUrl, String authorImageUrl, String tag,
+                 String id, String title, String author) {
         this.text = text;
-        this.name = name;
-        this.photoUrl = photoUrl;
-        this.tags = tags;
+        this.newsImageUrl = newsImageUrl;
+        this.authorImageUrl = authorImageUrl;
+        this.tag = tag;
         this.id = id;
+        this.title = title;
+        this.author = author;
     }
 
-    public Post(String text, String name, String id) {
+    public Post(String text, String authorImageUrl, String tag,
+                String id, String title, String author) {
         this.text = text;
-        this.name = name;
+        this.authorImageUrl = authorImageUrl;
+        this.tag = tag;
         this.id = id;
-    }
-
-    public Post(String text, String name, String photoUrl, String id) {
-        this.text = text;
-        this.name = name;
-        this.photoUrl = photoUrl;
-        this.id = id;
+        this.title = title;
+        this.author = author;
     }
 
     public String getText() {
@@ -41,27 +43,53 @@ public class Post {
         this.text = text;
     }
 
-    public String getName() {
-        return name;
+    public String getPostImageUrl() {
+        return newsImageUrl;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setPostImageUrl(String newsImageUrl) {
+        this.newsImageUrl = newsImageUrl;
     }
 
-    public String getPhotoUrl() {
-        return photoUrl;
+    public String getAuthorImageUrl() {
+        return authorImageUrl;
     }
 
-    public void setPhotoUrl(String photoUrl) {
-        this.photoUrl = photoUrl;
+    public void setAuthorImageUrl(String authorImageUrl) {
+        this.authorImageUrl = authorImageUrl;
     }
 
-    public String getTags() {
-        return tags;
+    public String getTag() {
+        return tag;
     }
 
-    public void setTags(String tags) {
-        this.tags = tags;
+    public void setTag(String tag) {
+        this.tag = tag;
     }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public String getAuthor() {
+        return author;
+    }
+
+    public void setAuthor(String author) {
+        this.author = author;
+    }
+
+
 }

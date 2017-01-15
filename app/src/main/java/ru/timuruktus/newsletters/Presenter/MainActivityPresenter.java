@@ -4,7 +4,11 @@ package ru.timuruktus.newsletters.Presenter;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.Network;
+import android.net.NetworkInfo;
 import android.support.annotation.NonNull;
 import android.support.design.internal.NavigationMenu;
 import android.support.design.widget.NavigationView;
@@ -15,6 +19,7 @@ import android.view.ContextMenu;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -29,6 +34,7 @@ import org.greenrobot.eventbus.Subscribe;
 
 import ru.timuruktus.newsletters.Model.FireBase.Listeners.FireBaseListeners;
 import ru.timuruktus.newsletters.Model.JSONFragments.Post;
+import ru.timuruktus.newsletters.Model.JSONFragments.UserAccount;
 import ru.timuruktus.newsletters.R;
 import ru.timuruktus.newsletters.View.Activities.IMainActivity;
 import ru.timuruktus.newsletters.View.Activities.MainActivity;
@@ -47,12 +53,10 @@ public class MainActivityPresenter {
         this.mainActivityPresenterAdapter = new MainActivityPresenterAdapter(this);
         this.iMainActivity = iMainActivity;
         if (FirebaseAuth.getInstance().getCurrentUser() == null) {
-            MainActivity.navigationView.getMenu().findItem(R.id.logout_menu).setVisible(false);
-            MainActivity.navigationView.getMenu().findItem(R.id.registration_menu).setVisible(true);
+            hideLogout(true);
         }
         else{
-            MainActivity.navigationView.getMenu().findItem(R.id.logout_menu).setVisible(true);
-            MainActivity.navigationView.getMenu().findItem(R.id.registration_menu).setVisible(false);
+            hideLogout(false);
         }
         initFirebaseAuthListener();
     }
@@ -60,13 +64,17 @@ public class MainActivityPresenter {
     // !!!!!!UNDER THIS STATEMENT- SIGNALS FROM VIEW!!!!!!
 
     public void onLeftMenuButClick(MenuItem item, FragmentManager fragmentManager, DrawerLayout drawer){
-
+        if(!hasConnection(drawer.getContext())){
+            Toast.makeText(drawer.getContext(), R.string.disabled_network, Toast.LENGTH_LONG).show();
+            drawer.closeDrawer(GravityCompat.START);
+            return;
+        }
         Fragment currentFragment = iMainActivity.getCurrentFragment();
         int id = item.getItemId();
         if(id != currentFragment.getId()) {
             if (id == R.id.news_menu) {
                 changeFragment(fragmentManager, new WelcomeFragment(), true);
-            } else if (id == R.id.tag_menu) {
+            } else if (id == R.id.post_menu) {
 
             } else if (id == R.id.settings_menu) {
 
@@ -75,8 +83,7 @@ public class MainActivityPresenter {
             } else if (id == R.id.logout_menu){
                 FirebaseAuth.getInstance().signOut();
                 changeFragment(fragmentManager, new WelcomeFragment(), true);
-                MainActivity.navigationView.getMenu().findItem(R.id.registration_menu).setVisible(true);
-                MainActivity.navigationView.getMenu().findItem(R.id.logout_menu).setVisible(false);
+                hideLogout(true);
                 changeEmailMenu("");
                 Log.d(TAG, "LOGOUT FROM MENU");
 
@@ -100,12 +107,66 @@ public class MainActivityPresenter {
     }
 
     public void readUserEmailFromFireBase(){
+        FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+        if(currentUser == null){
+            return;
+        }
+        final String uid = currentUser.getUid();
+        FirebaseDatabase.getInstance().getReference().child("Users").child(uid)
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        // Get user information
+                        UserAccount user = dataSnapshot.getValue(UserAccount.class);
+                        changeEmailMenu(user.getEmail());
+                        if(user.getUsername() != null){
+                            changeUsernameMenu(user.getEmail());
+                        }
+                    }
 
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                });
 
     }
 
     public void changeEmailMenu(String email){
         iMainActivity.changeMenuEmail(email);
+    }
+
+    public void changeUsernameMenu(String username){ iMainActivity.changeUsernameMenu(username);}
+
+    public static boolean hasConnection(final Context context) {
+        ConnectivityManager cm = (ConnectivityManager)context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo wifiInfo = cm.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
+        if (wifiInfo != null && wifiInfo.isConnected())
+        {
+            return true;
+        }
+        wifiInfo = cm.getNetworkInfo(ConnectivityManager.TYPE_MOBILE);
+        if (wifiInfo != null && wifiInfo.isConnected())
+        {
+            return true;
+        }
+        wifiInfo = cm.getActiveNetworkInfo();
+        if (wifiInfo != null && wifiInfo.isConnected())
+        {
+            return true;
+        }
+        return false;
+    }
+
+    public void hideLogout(boolean hide){
+        if(hide){
+            MainActivity.navigationView.getMenu().findItem(R.id.logout_menu).setVisible(false);
+            MainActivity.navigationView.getMenu().findItem(R.id.registration_menu).setVisible(true);
+        }
+        else{
+            MainActivity.navigationView.getMenu().findItem(R.id.logout_menu).setVisible(true);
+            MainActivity.navigationView.getMenu().findItem(R.id.registration_menu).setVisible(false);
+        }
     }
 
 
