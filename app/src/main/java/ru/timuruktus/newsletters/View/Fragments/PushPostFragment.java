@@ -33,7 +33,7 @@ import ru.timuruktus.newsletters.View.Fragments.Interface.IPushPostFragment;
 public class PushPostFragment extends Fragment implements View.OnClickListener, IPushPostFragment{
     private static final int REQUEST = 1;
     private View rootView;
-    ImageView textImage;
+    ImageView textImage, vkLike;
     TextView titleView, textView, categoryView;
     EditText editText, editTitle;
     Button push, chooseCategory, chooseImage;
@@ -89,11 +89,13 @@ public class PushPostFragment extends Fragment implements View.OnClickListener, 
                     .setTitle(R.string.push_dialog_title);
             builder.setPositiveButton(R.string.push_link_text, new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int id) {
+                    localImg = null;
                     createURLLinkDialog();
                 }
             });
             builder.setNegativeButton(R.string.push_upload_text, new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int id) {
+                    urlToImage = null;
                     chooseIMGFromLocal();
                 }
             });
@@ -111,7 +113,14 @@ public class PushPostFragment extends Fragment implements View.OnClickListener, 
             builder.create();
         }else if(id == R.id.push){
             if(validate()) {
-                pushPostPresenter.onPushButtonClick(localImg);
+                if(urlToImage == null) {
+                    pushPostPresenter.onPushButtonClick(localImg, editText.getText().toString(),
+                            editTitle.getText().toString(), categoryView.getText().toString());
+                }
+                else if(localImg == null){
+                    pushPostPresenter.onPushButtonClick(urlToImage, editText.getText().toString(),
+                            editTitle.getText().toString(),categoryView.getText().toString());
+                }
             }else{
                 Toast.makeText(rootView.getContext(),R.string.push_error, Toast.LENGTH_SHORT).show();
             }
@@ -132,6 +141,9 @@ public class PushPostFragment extends Fragment implements View.OnClickListener, 
             return  false;
         }
         if(category == null){
+            return false;
+        }
+        if(categoryView.getText().toString() == ""){
             return false;
         }
         return true;
@@ -198,5 +210,11 @@ public class PushPostFragment extends Fragment implements View.OnClickListener, 
             chooseCategory.setVisibility(View.VISIBLE);
             chooseImage.setVisibility(View.VISIBLE);
         }
+    }
+
+    @Override
+    public void showError() {
+        turnOnLoading(false);
+        Toast.makeText(rootView.getContext(), R.string.push_error, Toast.LENGTH_LONG).show();
     }
 }

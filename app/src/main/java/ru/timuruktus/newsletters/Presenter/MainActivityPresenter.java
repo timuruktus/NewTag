@@ -111,25 +111,7 @@ public class MainActivityPresenter {
         if(currentUser == null){
             return;
         }
-        final String uid = currentUser.getUid();
-        FirebaseDatabase.getInstance().getReference().child("Users").child(uid)
-                .addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(DataSnapshot dataSnapshot) {
-                        // Get user information
-                        UserAccount user = dataSnapshot.getValue(UserAccount.class);
-                        changeEmailMenu(user.getEmail());
-                        if(user.getUsername() != null){
-                            changeUsernameMenu(user.getEmail());
-                        }
-                    }
-
-                    @Override
-                    public void onCancelled(DatabaseError databaseError) {
-
-                    }
-                });
-
+        changeEmailMenu(currentUser.getEmail());
     }
 
     public void changeEmailMenu(String email){

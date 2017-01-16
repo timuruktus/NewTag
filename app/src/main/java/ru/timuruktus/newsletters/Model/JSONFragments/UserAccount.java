@@ -8,17 +8,9 @@ public class UserAccount {
     public final static String TAG = "tag";
 
     String username;
-    int rating;
+    int rating = 0;
 
-
-    String email;
-
-    public UserAccount(){}
-
-    public UserAccount(String email){
-        Log.d(TAG, "Email is UserAccount constructor: " + email);
-        this.email = email;
-        this.rating = 0;
+    public UserAccount(){
     }
 
     public String getUsername() {
@@ -37,13 +29,6 @@ public class UserAccount {
         this.rating = rating;
     }
 
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
 
 
 

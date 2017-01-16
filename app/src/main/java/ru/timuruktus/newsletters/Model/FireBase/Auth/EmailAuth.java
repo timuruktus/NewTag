@@ -95,7 +95,7 @@ public class EmailAuth {
                                         }
                                     }
                                 });
-                        writeNewUser(FirebaseAuth.getInstance().getCurrentUser().getUid(), email);
+                        writeNewUser(email);
                         authPresenter.onAuthSucceed(false);
                     }
                 });
@@ -183,11 +183,11 @@ public class EmailAuth {
     }
 
 
-    private void writeNewUser(String userId, String email) {
+    private void writeNewUser(String email) {
         Log.d(TAG, "Email in writeNewUser(): " + email);
-        UserAccount user = new UserAccount(email);
+        UserAccount user = new UserAccount();
         mDatabase = FirebaseDatabase.getInstance().getReference();
-        mDatabase.child("Users").child(userId).setValue(user);
+        mDatabase.child("Users").child(email).setValue(user);
     }
 
 

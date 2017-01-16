@@ -51,11 +51,11 @@ public class WelcomeFragment extends Fragment implements IWelcomeFragment {
         View rootView =
                 inflater.inflate(R.layout.welcome_fragment, container, false);
 
-        userPostsAdapter = new UserPostsAdapter(rootView.getContext(), );
+        //userPostsAdapter = new UserPostsAdapter(rootView.getContext(), );
 
         ListView userPosts = (ListView) rootView.findViewById(R.id.userPosts);
         // TODO: Add posts to Adapter
-        userPosts.setAdapter();
+        //userPosts.setAdapter(userPostsAdapter);
         userPosts.setOnScrollListener(new AbsListView.OnScrollListener() {
 
             @Override

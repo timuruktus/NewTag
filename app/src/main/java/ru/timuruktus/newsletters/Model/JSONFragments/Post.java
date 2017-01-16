@@ -7,7 +7,6 @@ public class Post {
     private String newsImageUrl;
     private String authorImageUrl;
     private String tag;
-    private String id;
     private String title;
     private String author; //Author- authId
 
@@ -15,22 +14,20 @@ public class Post {
     }
 
     public Post(String text, String newsImageUrl, String authorImageUrl, String tag,
-                 String id, String title, String author) {
+                 String title, String author) {
         this.text = text;
         this.newsImageUrl = newsImageUrl;
         this.authorImageUrl = authorImageUrl;
         this.tag = tag;
-        this.id = id;
         this.title = title;
         this.author = author;
     }
 
     public Post(String text, String authorImageUrl, String tag,
-                String id, String title, String author) {
+                String title, String author) {
         this.text = text;
         this.authorImageUrl = authorImageUrl;
         this.tag = tag;
-        this.id = id;
         this.title = title;
         this.author = author;
     }
@@ -67,13 +64,6 @@ public class Post {
         this.tag = tag;
     }
 
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
 
     public String getTitle() {
         return title;
