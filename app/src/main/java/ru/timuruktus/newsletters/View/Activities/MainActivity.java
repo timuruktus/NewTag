@@ -45,6 +45,7 @@ public class MainActivity extends AppCompatActivity
     public static NavigationView navigationView;
     private ContextMenu menu;
     private Toolbar toolbar;
+    TextView userEmail, userName;
 
 
     @Override
@@ -64,7 +65,6 @@ public class MainActivity extends AppCompatActivity
         // TOOLBAR AND ETC.
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
 
         navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
@@ -136,16 +136,5 @@ public class MainActivity extends AppCompatActivity
         toolbar.setTitle(resId);
     }
 
-    @Override
-    public void changeMenuEmail(String email) {
-        TextView userEmail = (TextView) findViewById(R.id.userEmail);
-        userEmail.setText(email);
-    }
-
-    @Override
-    public void changeUsernameMenu(String username) {
-        TextView userName = (TextView) findViewById(R.id.userName);
-        userName.setText(username);
-    }
 
 }

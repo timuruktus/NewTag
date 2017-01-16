@@ -27,32 +27,31 @@ public class PushPostPresenter {
     private String username,text,title,tag, urlToImage;
     Bitmap localImg;
     private static boolean waiting = true;
+    private ArrayList<String> categories;
 
 
     public PushPostPresenter(IPushPostFragment pushPostFragment){
         this.iPushPostFragment = pushPostFragment;
     }
 
-    public ArrayList<String> getCategories(){
-        final ArrayList<String> categories = new ArrayList<>();
+    public void getCategories(){
+        categories = new ArrayList<>();
         mDatabase = FirebaseDatabase.getInstance().getReference();
-        Query myTopPostsQuery = mDatabase.child("Category");
-        myTopPostsQuery.addValueEventListener(new ValueEventListener() {
+        mDatabase.child("Category").addListenerForSingleValueEvent(new ValueEventListener() {
 
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for (DataSnapshot postSnapshot: dataSnapshot.getChildren()) {
-                    categories.add(postSnapshot.toString());
+                    categories.add(postSnapshot.getValue().toString());
+                    System.out.println(postSnapshot.getValue().toString());
                 }
+                iPushPostFragment.setCategoryArray(categories);
             }
             @Override
             public void onCancelled(DatabaseError databaseError) {
-                // Getting Post failed, log a message
                 Log.w(TAG, "loadPost:onCancelled", databaseError.toException());
-                // ...
             }
         });
-        return categories;
     }
 
     public void onPushButtonClick(Bitmap localImg, String text, String title,

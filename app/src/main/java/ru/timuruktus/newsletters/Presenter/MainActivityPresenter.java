@@ -39,6 +39,7 @@ import ru.timuruktus.newsletters.R;
 import ru.timuruktus.newsletters.View.Activities.IMainActivity;
 import ru.timuruktus.newsletters.View.Activities.MainActivity;
 import ru.timuruktus.newsletters.View.Fragments.AuthFragment;
+import ru.timuruktus.newsletters.View.Fragments.PushPostFragment;
 import ru.timuruktus.newsletters.View.Fragments.WelcomeFragment;
 
 public class MainActivityPresenter {
@@ -49,7 +50,6 @@ public class MainActivityPresenter {
     private FireBaseListeners fireBaseListeners;
 
     public MainActivityPresenter(IMainActivity iMainActivity){
-        readUserEmailFromFireBase();
         this.mainActivityPresenterAdapter = new MainActivityPresenterAdapter(this);
         this.iMainActivity = iMainActivity;
         if (FirebaseAuth.getInstance().getCurrentUser() == null) {
@@ -75,7 +75,7 @@ public class MainActivityPresenter {
             if (id == R.id.news_menu) {
                 changeFragment(fragmentManager, new WelcomeFragment(), true);
             } else if (id == R.id.post_menu) {
-
+                changeFragment(fragmentManager, new PushPostFragment(), true);
             } else if (id == R.id.settings_menu) {
 
             } else if (id == R.id.registration_menu) {
@@ -84,7 +84,6 @@ public class MainActivityPresenter {
                 FirebaseAuth.getInstance().signOut();
                 changeFragment(fragmentManager, new WelcomeFragment(), true);
                 hideLogout(true);
-                changeEmailMenu("");
                 Log.d(TAG, "LOGOUT FROM MENU");
 
             }
@@ -106,19 +105,6 @@ public class MainActivityPresenter {
         fireBaseListeners.initAuthListener();
     }
 
-    public void readUserEmailFromFireBase(){
-        FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
-        if(currentUser == null){
-            return;
-        }
-        changeEmailMenu(currentUser.getEmail());
-    }
-
-    public void changeEmailMenu(String email){
-        iMainActivity.changeMenuEmail(email);
-    }
-
-    public void changeUsernameMenu(String username){ iMainActivity.changeUsernameMenu(username);}
 
     public static boolean hasConnection(final Context context) {
         ConnectivityManager cm = (ConnectivityManager)context.getSystemService(Context.CONNECTIVITY_SERVICE);

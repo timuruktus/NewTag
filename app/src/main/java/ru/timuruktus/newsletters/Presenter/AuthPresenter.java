@@ -52,7 +52,6 @@ public class AuthPresenter  {
      * <joke>Goodnight, sweet prince ;)</joke>
      */
     public void onChangeFragment(FragmentManager fm) {
-        MainActivityPresenter.mainActivityPresenterAdapter.changeEmailMenu(email);
         MainActivityPresenter.mainActivityPresenterAdapter.changeFragment(fm, new WelcomeFragment(), false);
         MainActivityPresenter.mainActivityPresenterAdapter.hideLogout(false);
     }

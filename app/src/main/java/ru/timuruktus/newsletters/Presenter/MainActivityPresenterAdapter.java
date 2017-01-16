@@ -13,10 +13,6 @@ public class MainActivityPresenterAdapter {
         this.mainActivityPresenter = mainActivityPresenter;
     }
 
-    public void changeEmailMenu(String email){
-        mainActivityPresenter.changeEmailMenu(email);
-    }
-
     public void changeFragment(FragmentManager fragmentManager, Fragment fragment,
                                       boolean addToBachStack) {
         mainActivityPresenter.changeFragment(fragmentManager, fragment, addToBachStack);

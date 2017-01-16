@@ -12,6 +12,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.annotation.Nullable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -43,6 +44,8 @@ public class PushPostFragment extends Fragment implements View.OnClickListener, 
     private ArrayList<String> categories;
     PushPostPresenter pushPostPresenter;
     private String category;
+    private CharSequence[] categoriesCharSequence;
+    public static final String TAG = "tag";
 
 
     @Override
@@ -57,7 +60,7 @@ public class PushPostFragment extends Fragment implements View.OnClickListener, 
         // TODO: THIS
         super.onCreate(savedInstanceState);
         rootView =
-                inflater.inflate(R.layout.auth_fragment, container, false);
+                inflater.inflate(R.layout.push_post_fragment, container, false);
 
         pushPostPresenter = new PushPostPresenter(this);
 
@@ -84,6 +87,7 @@ public class PushPostFragment extends Fragment implements View.OnClickListener, 
     public void onClick(View v) {
         int id = v.getId();
         if(id == R.id.chooseImage){
+            // TODO: HEre is an error! Image cannot be read from local repository! Access denied!
             AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
             builder.setMessage(R.string.push_dialog_message)
                     .setTitle(R.string.push_dialog_title);
@@ -99,18 +103,12 @@ public class PushPostFragment extends Fragment implements View.OnClickListener, 
                     chooseIMGFromLocal();
                 }
             });
+            builder.create();
+            builder.show();
         }else if(id == R.id.chooseCategory){
             category = null;
-            categories = pushPostPresenter.getCategories();
-            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-            final CharSequence[] categoriesCharSequence = (CharSequence[]) categories.toArray();
-            builder.setTitle(R.string.push_choose_category)
-                    .setItems(categoriesCharSequence, new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int which) {
-                            category = categoriesCharSequence[which].toString();
-                        }
-                    });
-            builder.create();
+            pushPostPresenter.getCategories();
+
         }else if(id == R.id.push){
             if(validate()) {
                 if(urlToImage == null) {
@@ -158,10 +156,12 @@ public class PushPostFragment extends Fragment implements View.OnClickListener, 
                     @Override
                     public void onClick(DialogInterface dialog, int id) {
                         EditText et = (EditText) getActivity().findViewById(R.id.push_url_link);
+                        //TODO: ERROR ON BUTOON CLICK!
                         urlToImage = et.getText().toString();
                     }
                 });
         builder.create();
+        builder.show();
     }
 
     public void chooseIMGFromLocal(){
@@ -216,5 +216,23 @@ public class PushPostFragment extends Fragment implements View.OnClickListener, 
     public void showError() {
         turnOnLoading(false);
         Toast.makeText(rootView.getContext(), R.string.push_error, Toast.LENGTH_LONG).show();
+    }
+
+    public void setCategoryArray(ArrayList<String> categories){
+        this.categories = categories;
+        showCategoryDialog();
+    }
+
+    public void showCategoryDialog(){
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        categoriesCharSequence = categories.toArray(new CharSequence[categories.size()]);
+        builder.setTitle(R.string.push_choose_category)
+                .setItems(categoriesCharSequence, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        category = categoriesCharSequence[which].toString();
+                    }
+                });
+        builder.create();
+        builder.show();
     }
 }

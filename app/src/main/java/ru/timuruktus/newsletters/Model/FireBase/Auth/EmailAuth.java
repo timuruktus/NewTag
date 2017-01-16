@@ -187,7 +187,7 @@ public class EmailAuth {
         Log.d(TAG, "Email in writeNewUser(): " + email);
         UserAccount user = new UserAccount();
         mDatabase = FirebaseDatabase.getInstance().getReference();
-        mDatabase.child("Users").child(email).setValue(user);
+        mDatabase.child("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).setValue(user);
     }
 
 
