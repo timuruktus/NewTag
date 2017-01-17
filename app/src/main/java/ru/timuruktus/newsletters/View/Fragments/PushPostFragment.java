@@ -27,6 +27,8 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.squareup.picasso.Picasso;
+
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -138,15 +140,19 @@ public class PushPostFragment extends Fragment implements View.OnClickListener, 
             return false;
         }
         if(editText.getText().toString().equals("")){
+            Log.d(TAG, "editText is empty");
             return false;
         }
         if(editTitle.getText().toString().equals("")){
+            Log.d(TAG, "editTitle is empty");
             return  false;
         }
         if(category == null){
+            Log.d(TAG, "category is empty");
             return false;
         }
         if(categoryView.getText().toString() == ""){
+            Log.d(TAG, "categoryView is empty");
             return false;
         }
         return true;
@@ -156,13 +162,15 @@ public class PushPostFragment extends Fragment implements View.OnClickListener, 
         final AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         final LayoutInflater inflater = getActivity().getLayoutInflater();
 
-        builder.setView(inflater.inflate(R.layout.dialog_url, null))
+        final View view = inflater.inflate(R.layout.dialog_url, null);
+        builder.setView(view)
                 .setPositiveButton(R.string.OK, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int id) {
-                        EditText et = (EditText) getActivity().findViewById(R.id.push_url_link);
-                        //TODO: ERROR ON BUTOON CLICK!
+                        EditText et = (EditText) view.findViewById(R.id.push_url_link);
+                        //TODO: ERROR ON BUTTON CLICK!
                         urlToImage = et.getText().toString();
+                        Picasso.with(rootView.getContext()).load(urlToImage).into(textImage);
                     }
                 });
         builder.create();
@@ -172,13 +180,17 @@ public class PushPostFragment extends Fragment implements View.OnClickListener, 
     public void chooseIMGFromLocal(){
         Intent i = new Intent(Intent.ACTION_PICK);
         i.setType("image/*");
+
         startActivityForResult(i, REQUEST);
     }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data){
         localImg = null;
-        if (requestCode == REQUEST) {
+        if(resultCode != -1){
+            Toast.makeText(rootView.getContext(),R.string.push_didnt_choose_image,Toast.LENGTH_SHORT).show();
+        }
+        if (requestCode == REQUEST && resultCode == -1) {
             Uri selectedImage = data.getData();
             try {
                 localImg = MediaStore.Images.Media.getBitmap(rootView.getContext().getContentResolver(), selectedImage);
@@ -235,6 +247,7 @@ public class PushPostFragment extends Fragment implements View.OnClickListener, 
                 .setItems(categoriesCharSequence, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         category = categoriesCharSequence[which].toString();
+                        categoryView.setText(category);
                     }
                 });
         builder.create();

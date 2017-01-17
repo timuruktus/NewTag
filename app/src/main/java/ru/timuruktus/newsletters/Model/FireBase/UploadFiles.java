@@ -12,15 +12,18 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
+import org.greenrobot.eventbus.EventBus;
+
 import java.io.ByteArrayOutputStream;
 
+import ru.timuruktus.newsletters.Presenter.Events.StartPushEvent;
 import ru.timuruktus.newsletters.Presenter.PushPostPresenter;
 
 public class UploadFiles {
 
 
     static Uri downloadUrl;
-    public static Uri uploadPostImage(Bitmap localImg){
+    public static void uploadPostImage(Bitmap localImg){
 
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         localImg.compress(Bitmap.CompressFormat.JPEG, 100, baos);
@@ -35,17 +38,16 @@ public class UploadFiles {
         uploadTask.addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception exception) {
-                // Handle unsuccessful uploads
+                EventBus.getDefault().post(new StartPushEvent(false, null));
             }
         }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
             @Override
             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                 // taskSnapshot.getMetadata() contains file metadata such as size, content-type, and download URL.
                 downloadUrl = taskSnapshot.getDownloadUrl();
-
+                EventBus.getDefault().post(new StartPushEvent(true, downloadUrl.toString()));
             }
         });
-        PushPostPresenter.onImageUploadListener();
-        return downloadUrl;
+
     }
 }
