@@ -1,17 +1,21 @@
 package ru.timuruktus.newsletters.Presenter;
 
 
+import android.Manifest;
+import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.net.ConnectivityManager;
 import android.net.Network;
 import android.net.NetworkInfo;
 import android.support.annotation.NonNull;
 import android.support.design.internal.NavigationMenu;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.util.Log;
@@ -48,6 +52,8 @@ public class MainActivityPresenter {
     public static final String TAG = "tag";
     public static MainActivityPresenterAdapter mainActivityPresenterAdapter;
     private FireBaseListeners fireBaseListeners;
+    // Storage Permissions
+    private static final int REQUEST_EXTERNAL_STORAGE = 1;
 
     public MainActivityPresenter(IMainActivity iMainActivity){
         this.mainActivityPresenterAdapter = new MainActivityPresenterAdapter(this);
@@ -59,6 +65,7 @@ public class MainActivityPresenter {
             hideLogout(false);
         }
         initFirebaseAuthListener();
+        verifyStoragePermissions(iMainActivity.getActivity());
     }
 
     // !!!!!!UNDER THIS STATEMENT- SIGNALS FROM VIEW!!!!!!
@@ -138,6 +145,30 @@ public class MainActivityPresenter {
     }
 
 
+    private static String[] PERMISSIONS_STORAGE = {
+            Manifest.permission.READ_EXTERNAL_STORAGE,
+            Manifest.permission.WRITE_EXTERNAL_STORAGE
+    };
 
+    /**
+     * Checks if the app has permission to write to device storage
+     *
+     * If the app does not has permission then the user will be prompted to grant permissions
+     *
+     * @param activity
+     */
+    public static void verifyStoragePermissions(Activity activity) {
+        // Check if we have write permission
+        int permission = ActivityCompat.checkSelfPermission(activity, Manifest.permission.WRITE_EXTERNAL_STORAGE);
+
+        if (permission != PackageManager.PERMISSION_GRANTED) {
+            // We don't have permission so prompt the user
+            ActivityCompat.requestPermissions(
+                    activity,
+                    PERMISSIONS_STORAGE,
+                    REQUEST_EXTERNAL_STORAGE
+            );
+        }
+    }
 
 }

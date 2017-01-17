@@ -1,5 +1,6 @@
 package ru.timuruktus.newsletters.View.Activities;
 
+import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
@@ -134,6 +135,11 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void changeToolbarTitle(int resId) {
         toolbar.setTitle(resId);
+    }
+
+    @Override
+    public Activity getActivity() {
+        return this;
     }
 
 

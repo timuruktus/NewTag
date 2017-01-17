@@ -1,13 +1,14 @@
 package ru.timuruktus.newsletters.View.Activities;
 
 
+import android.app.Activity;
 import android.app.Fragment;
 
 public interface IMainActivity {
 
     Fragment getCurrentFragment();
     void changeToolbarTitle(int resId);
-
+    Activity getActivity();
 
 
 }

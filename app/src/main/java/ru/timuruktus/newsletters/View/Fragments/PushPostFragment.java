@@ -1,10 +1,13 @@
 package ru.timuruktus.newsletters.View.Fragments;
 
 
+import android.Manifest;
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Fragment;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapRegionDecoder;
 import android.graphics.Rect;
@@ -12,6 +15,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -46,6 +50,7 @@ public class PushPostFragment extends Fragment implements View.OnClickListener, 
     private String category;
     private CharSequence[] categoriesCharSequence;
     public static final String TAG = "tag";
+
 
 
     @Override
@@ -235,4 +240,6 @@ public class PushPostFragment extends Fragment implements View.OnClickListener, 
         builder.create();
         builder.show();
     }
+
+
 }
